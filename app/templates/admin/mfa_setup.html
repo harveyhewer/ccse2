@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}MFA Setup — StadiumOps Admin{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="mb-1">Set up MFA</h2>
+        <p class="text-muted mb-4">Scan the QR code below with Google Authenticator or Authy, then enter a code to confirm.</p>
+
+        <div class="text-center mb-4">
+          <img src="data:image/png;base64,{{ qr_b64 }}" alt="TOTP QR code" class="img-fluid" style="max-width:220px">
+        </div>
+
+        <p class="small text-muted text-center mb-4">
+          Can't scan? Enter this secret manually:<br>
+          <code>{{ secret }}</code>
+        </p>
+
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.token.label(class="form-label") }}
+            {{ form.token(class="form-control form-control-lg text-center" + (" is-invalid" if form.token.errors else ""),
+                          maxlength=6, inputmode="numeric") }}
+            {% for error in form.token.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          {{ form.submit(class="btn btn-success w-100") }}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

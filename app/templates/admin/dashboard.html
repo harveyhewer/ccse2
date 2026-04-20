@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — StadiumOps{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Admin Dashboard</h1>
+  {% if not current_user.mfa_enabled %}
+    <a href="{{ url_for('admin.mfa_setup') }}" class="btn btn-warning">⚠ Enable MFA</a>
+  {% else %}
+    <span class="badge bg-success fs-6">MFA Enabled ✓</span>
+  {% endif %}
+</div>
+
+<!-- Summary stats -->
+<div class="row row-cols-1 row-cols-md-4 g-3 mb-5">
+  <div class="col">
+    <div class="card text-bg-primary text-center p-3">
+      <div class="fs-2 fw-bold">{{ total_events }}</div>
+      <div>Events</div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card text-bg-success text-center p-3">
+      <div class="fs-2 fw-bold">{{ total_bookings }}</div>
+      <div>Bookings</div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card text-bg-info text-center p-3">
+      <div class="fs-2 fw-bold">{{ total_seats }}</div>
+      <div>Total Seats</div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card text-bg-dark text-center p-3">
+      <div class="fs-2 fw-bold">£{{ '%.2f' | format(total_revenue) }}</div>
+      <div>Revenue</div>
+    </div>
+  </div>
+</div>
+
+<h3>Recent Bookings</h3>
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Reference</th>
+        <th>Customer</th>
+        <th>Event</th>
+        <th>Seat</th>
+        <th>Price</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in recent_bookings %}
+        <tr>
+          <td><code>{{ b.reference }}</code></td>
+          <td>{{ b.user.username }}</td>
+          <td>{{ b.seat.event.name }}</td>
+          <td>{{ b.seat.row }}{{ b.seat.number }}</td>
+          <td>£{{ '%.2f' | format(b.seat.price) }}</td>
+          <td>{{ b.booked_at.strftime('%d %b %Y') }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-muted text-center">No bookings yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ event.name }} — Seats{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('tickets.index') }}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Back to events</a>
+
+<h1>{{ event.name }}</h1>
+<p class="text-muted">📍 {{ event.venue }} &nbsp;|&nbsp; 📅 {{ event.date }}</p>
+
+<!-- Seat legend -->
+<div class="d-flex gap-3 mb-4">
+  <span><span class="seat-demo seat-available"></span> Available</span>
+  <span><span class="seat-demo seat-booked"></span> Booked</span>
+</div>
+
+<!-- Seat grid: one row per row letter -->
+{% for row, seats in seats_by_row.items() %}
+  <div class="d-flex align-items-center mb-2">
+    <span class="row-label me-3">Row {{ row }}</span>
+    <div class="d-flex flex-wrap gap-2">
+      {% for seat in seats %}
+        {% if seat.is_booked %}
+          <span class="seat seat-booked" title="Row {{ seat.row }} Seat {{ seat.number }} — Booked">
+            {{ seat.row }}{{ seat.number }}
+          </span>
+        {% else %}
+          <form method="POST" action="{{ url_for('tickets.book_seat', seat_id=seat.id) }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="seat seat-available"
+                    title="Row {{ seat.row }} Seat {{ seat.number }} — £{{ '%.2f' | format(seat.price) }}"
+                    {% if not current_user.is_authenticated %}
+                    onclick="event.preventDefault(); alert('Please log in to book a seat.');"
+                    {% endif %}>
+              {{ seat.row }}{{ seat.number }}
+            </button>
+          </form>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+
+{% if not current_user.is_authenticated %}
+  <div class="alert alert-info mt-4">
+    <a href="{{ url_for('auth.login') }}">Log in</a> or
+    <a href="{{ url_for('auth.register') }}">register</a> to book a seat.
+  </div>
+{% endif %}
+{% endblock %}

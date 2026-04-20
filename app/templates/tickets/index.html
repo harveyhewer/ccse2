@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Events — StadiumOps{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Upcoming Events</h1>
+
+{% if events %}
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for event in events %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.name }}</h5>
+            <p class="card-text text-muted">{{ event.description }}</p>
+            <ul class="list-unstyled small">
+              <li>📍 {{ event.venue }}</li>
+              <li>📅 {{ event.date }}</li>
+              <li>🪑 {{ event.seats | selectattr('is_booked', 'equalto', false) | list | length }} seats available</li>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <a href="{{ url_for('tickets.event_detail', event_id=event.id) }}" class="btn btn-primary w-100">
+              View Seats
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">No events currently available. Check back soon!</p>
+{% endif %}
+{% endblock %}

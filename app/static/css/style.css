@@ -1,0 +1,77 @@
+/* StadiumOps — custom styles */
+
+/* ── Seat grid ──────────────────────────────────────────── */
+
+/* Base seat button / badge */
+.seat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: none;
+  cursor: default;
+  user-select: none;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* Available seat — clickable green button */
+.seat-available {
+  background-color: #198754;
+  color: #fff;
+  cursor: pointer;
+}
+
+.seat-available:hover {
+  background-color: #157347;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Booked seat — muted grey, not interactive */
+.seat-booked {
+  background-color: #adb5bd;
+  color: #fff;
+}
+
+/* Row label */
+.row-label {
+  width: 56px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+/* Small legend squares */
+.seat-demo {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* ── General utility ────────────────────────────────────── */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+/* Stat cards on admin dashboard */
+.card.text-bg-primary,
+.card.text-bg-success,
+.card.text-bg-info,
+.card.text-bg-dark {
+  border: none;
+  border-radius: 12px;
+}

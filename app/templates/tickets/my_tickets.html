@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}My Tickets — StadiumOps{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">My Tickets</h1>
+
+{% if bookings %}
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Reference</th>
+          <th>Event</th>
+          <th>Seat</th>
+          <th>Price</th>
+          <th>Booked at</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td><code>{{ booking.reference }}</code></td>
+            <td>{{ booking.seat.event.name }}</td>
+            <td>Row {{ booking.seat.row }}, Seat {{ booking.seat.number }}</td>
+            <td>£{{ '%.2f' | format(booking.seat.price) }}</td>
+            <td>{{ booking.booked_at.strftime('%d %b %Y %H:%M') }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">You have no bookings yet. <a href="{{ url_for('tickets.index') }}">Browse events</a></p>
+{% endif %}
+{% endblock %}

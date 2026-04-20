@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}StadiumOps{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('tickets.index') }}">🏟 StadiumOps</a>
+      <div class="navbar-nav ms-auto">
+        {% if current_user.is_authenticated %}
+          {% if current_user.is_admin %}
+            <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Admin</a>
+            <a class="nav-link" href="{{ url_for('admin.sales') }}">Sales</a>
+          {% else %}
+            <a class="nav-link" href="{{ url_for('tickets.my_tickets') }}">My Tickets</a>
+          {% endif %}
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout ({{ current_user.username }})</a>
+        {% else %}
+          <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+          <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  <div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endwith %}
+  </div>
+
+  <!-- Page content -->
+  <main class="container my-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="text-center text-muted py-4 border-top mt-5">
+    <small>&copy; 2025 StadiumOps &mdash; Events Ticketing &amp; Operations</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
