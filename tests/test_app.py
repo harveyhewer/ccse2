@@ -7,7 +7,7 @@ Run locally with:
 
 import pytest
 from app import create_app, db
-from app.models import User, Event, Seat, Booking
+from app.models import User, Event, Seat
 from werkzeug.security import generate_password_hash
 
 

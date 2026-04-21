@@ -1,8 +1,4 @@
 """
-Admin blueprint — restricted management module.
-
-All routes require the user to be logged in AND have is_admin=True.
-MFA setup is also handled here.
 
 Routes:
     /admin/             - Dashboard with booking overview.
@@ -17,11 +13,11 @@ import base64
 import pyotp
 import qrcode
 
-from flask import Blueprint, render_template, redirect, url_for, flash, abort, Response
+from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 
 from app import db
-from app.models import Booking, Event, Seat, User
+from app.models import Booking, Event, Seat
 from app.forms import MFASetupForm
 
 admin_bp = Blueprint("admin", __name__, template_folder="../../templates/admin")

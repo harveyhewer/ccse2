@@ -41,7 +41,7 @@ class Event(db.Model):
     name = db.Column(db.String(128), nullable=False)
     description = db.Column(db.Text, nullable=True)
     venue = db.Column(db.String(128), nullable=False)
-    date = db.Column(db.String(20), nullable=False)  # storing as string for now, could use Date type later
+    date = db.Column(db.String(20), nullable=False) 
 
     seats = db.relationship("Seat", backref="event", lazy=True)
 
@@ -73,7 +73,7 @@ class Booking(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     seat_id = db.Column(db.Integer, db.ForeignKey("seats.id"), nullable=False)
     booked_at = db.Column(db.DateTime, default=datetime.utcnow)
-    reference = db.Column(db.String(12), unique=True, nullable=False)  # shown to user as confirmation
+    reference = db.Column(db.String(12), unique=True, nullable=False) 
 
     def __repr__(self):
         return f"<Booking {self.reference}>"
